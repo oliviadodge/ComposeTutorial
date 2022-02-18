@@ -1,9 +1,11 @@
 package com.develop.composetutorial
 
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.MaterialTheme
@@ -22,7 +24,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             ComposeTutorialTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
                     MessageCard(Message("Android", "Jetpack Compose"))
                 }
@@ -40,23 +41,35 @@ fun MessageCard(msg: Message) {
             painter = painterResource(R.drawable.ic_baseline_face_24),
             contentDescription = "Contact profile picture",
             modifier = Modifier
-                // Set image size to 40 dp
                 .size(40.dp)
-                // Clip image to be shaped as a circle
                 .clip(CircleShape)
+                .border(1.5.dp, MaterialTheme.colors.secondary, CircleShape)
         )
-        // Add a horizontal space between the image and the column
         Spacer(modifier = Modifier.width(8.dp))
         Column {
-            Text(text = msg.author)
-            // Add a vertical space between the author and message texts
+            Text(
+                text = msg.author,
+                color = MaterialTheme.colors.secondaryVariant,
+                style = MaterialTheme.typography.subtitle2
+            )
             Spacer(modifier = Modifier.height(4.dp))
-            Text(text = msg.body)
+            Surface(shape = MaterialTheme.shapes.medium, elevation = 1.dp) {
+                Text(
+                    text = msg.body,
+                    modifier = Modifier.padding(all = 4.dp),
+                    style = MaterialTheme.typography.body2
+                )
+            }
         }
     }
 }
 
-@Preview(showBackground = true)
+@Preview(name = "Light Mode")
+@Preview(
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    showBackground = true,
+    name = "Dark Mode",
+)
 @Composable
 fun DefaultPreview() {
     ComposeTutorialTheme {
